@@ -1,10 +1,11 @@
 import cors from 'cors';
 import express from 'express';
 import fetch from 'node-fetch';
+import path from 'path';
 
 const app = express();
 app.use(cors({ origin: true, credentials: true }));
-app.use(express.static('.'));
+app.use(express.static(path.resolve('../client')));
 
 app.get("/api", function(req, res, next){
     res.json("hello world");
