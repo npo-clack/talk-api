@@ -8,7 +8,10 @@ https://a3rt.recruit.co.jp/product/demo/talkAPI_demo1/index.html
 
 ## API （Application Programming Interface） とは
 
+https://wa3.i-3-i.info/word12428.html
+
 https://developer.mozilla.org/ja/docs/Glossary/API
+
 詳解； https://developer.mozilla.org/ja/docs/Learn/JavaScript/Client-side_web_APIs/Introduction
 
 コンピュータ間やプログラム間でのやりとりする際の決め事全般を指す。
