@@ -1,5 +1,8 @@
 # talk-api
 
+## 完成デモ
+https://a3rt.recruit.co.jp/product/demo/talkAPI_demo1/index.html
+
 ## 何をするか
 インターネット上に公開されている様々なAPIを使用する方法を学ぶ
 
@@ -28,6 +31,33 @@ from* https://qiita.com/NagaokaKenichi/items/df4c8455ab527aeacf02
 
 インターネットを介してやりとり行うAPI。
 その中でも広く使われているHTTP通信を用いてやりとりするもののことを今回は使ってやっていきます。
+
+# 手順
+
+## 実際にWeb APIを使ってみましょう。
+
+### Curl
+
+### console javascript
+
+### ローカルJavascript
+
+失敗する
+CORSの補足をする
+
+### Nodeから実行する
+
+Nodeについて → N予備校の項目を参照
+
+Nodeのインストール方法
+Win/ Mac でバージョン固定
+
+npm init して、必要なpackageを入れる
+n予備校でやってるから参考にする
+
+
+
+
 
 ## HTTP通信
 N予備校入門コースの2章の10節 HTTP通信を確認しよう。
@@ -63,14 +93,3 @@ Talk API https://a3rt.recruit.co.jp/product/talkAPI/
 コラム：プログラマの仕事の一つ
 実際にこういったAPIがすでに開発済みで、このAPIを使用してブラウザに表示するものを決めるというのは一般的な仕事
 
-
-
-Nodeについて → N予備校の項目を参照
-
-Nodeのインストール方法
-Win/ Mac でバージョン固定
-
-npm init して、必要なpackageを入れる
-n予備校でやってるから参考にする
-
-JSの解説をする
