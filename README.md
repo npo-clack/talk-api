@@ -26,9 +26,8 @@ https://developer.mozilla.org/ja/docs/Glossary/API
 > APIの機能はわかっているけれども、その中身の実際の動作は詳しくわからない(知らなくてもよい)機能の塊を、外部から呼び出す仕様のことを指す。また、上記図の右側の「呼ばれる側のシステム」そのものをWeb APIと呼ぶこともある。
 from* https://qiita.com/NagaokaKenichi/items/df4c8455ab527aeacf02
 
-インターネットを介してやりとり行うAPI
-
-
+インターネットを介してやりとり行うAPI。
+その中でも広く使われているHTTP通信を用いてやりとりするもののことを今回は使ってやっていきます。
 
 ## HTTP通信
 N予備校入門コースの2章の10節 HTTP通信を確認しよう。
