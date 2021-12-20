@@ -41,11 +41,11 @@ from* https://qiita.com/NagaokaKenichi/items/df4c8455ab527aeacf02
 
 # 手順
 
-## 実際にWeb APIを使ってみましょう。
+実際にWeb APIを使ってみましょう。
 TalkAPIもWebAPIの一つです。
 デモで発行したAPIKeyを使用して、リクエストを送ってみましょう。
 
-### [cURL](https://curl.se/)
+## [cURL](https://curl.se/)
 まずは自分のパソコンのコンソールからリクエストを送る方法として、`cURL`というコマンドラインツールを使います。
 
 Windowsではコマンドプロンプト、Macではターミナルを立ち上げ下記のコマンドを実行してください。
@@ -57,7 +57,7 @@ curl --version
 AAA... の部分は、でもで発行したAPIKeyに置き換えてください。
 ```
 curl -X POST https://api.a3rt.recruit.co.jp/talk/v1/smalltalk \
--F "apikey=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" \
+-F "apikey=" \
 -F "query=おはよう"
 ```
 
@@ -74,15 +74,59 @@ curl -X POST https://api.a3rt.recruit.co.jp/talk/v1/smalltalk \
 ```
 `perplexity` の数値は違っていても大丈夫です。
 
-
+「おはよう」の部分を変更するとその内容にそった返答が返ってくるはずです。
+「今日の天気は？」などでも返ってくるはず、変な返答なこともあります。。。
 
 
 ### console javascript
+次はブラウザ上のコンソールからリクエストを送ってみます。
 
-### ローカルJavascript
+Google Chrome を立ち上げて、Googleなどのページを表示した状態でデベロッパーコンソールを開いてください。
+デベロッパーツールは右上の三点リーダーから「その他のツール」→「デベロッパーツール」として開けます。
+（画像）
+
+開けたらコンソールに入力できると思います。
+
+ここはN予備校の「JavaScript体験」を参考にしてください。
+https://www.nnn.ed.nico/contents/guides/5181#how-to-open-console
+
+ここではJavaScriptが実行できるので、上記の 「cURL」で行ったことを実行してみましょう。
+JavaScriptからリクエストを送る際は「fetch」という関数を使用します。
+
+fetch: https://developer.mozilla.org/ja/docs/Web/API/Fetch_API/Using_Fetch
+
+下記のようにコンソールに入力して実行してみてください。
+```
+const formdata = new FormData();
+formdata.append('apikey','AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+formdata.append('query','おはよう');
+
+const response = await fetch('https://api.a3rt.recruit.co.jp/talk/v1/smalltalk',{
+	method: 'post',
+	body: formdata,
+});
+
+const json = await response.json();
+console.log(json);
+```
+
+下記のような内容が返ってくれば成功です。
+```
+{status: 0, message: 'ok', results: Array(1)}
+
+message: "ok"
+results: Array(1)
+	0: {perplexity: 0.07743213382788067, reply: 'おはようございます'}
+	length: 1
+status: 0
+```
+
+
+### JavaScriptファイルからの実行
 
 失敗する
 CORSの補足をする
+https://ja.javascript.info/fetch-crossorigin
 
 ### Nodeから実行する
 
