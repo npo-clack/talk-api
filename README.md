@@ -16,7 +16,7 @@ https://wa3.i-3-i.info/word12428.html
 
 https://developer.mozilla.org/ja/docs/Glossary/API
 
-詳解； https://developer.mozilla.org/ja/docs/Learn/JavaScript/Client-side_web_APIs/Introduction
+詳解: https://developer.mozilla.org/ja/docs/Learn/JavaScript/Client-side_web_APIs/Introduction
 
 コンピュータ間やプログラム間でのやりとりする際の決め事全般を指す。
 
@@ -34,6 +34,7 @@ https://developer.mozilla.org/ja/docs/Glossary/API
 
 >厳格な定義はないが、広義にはHTTPプロトコルを用いてネットワーク越しに呼び出すアプリケーション間、システム間のインターフェースのこと。
 > APIの機能はわかっているけれども、その中身の実際の動作は詳しくわからない(知らなくてもよい)機能の塊を、外部から呼び出す仕様のことを指す。また、上記図の右側の「呼ばれる側のシステム」そのものをWeb APIと呼ぶこともある。
+
 from* https://qiita.com/NagaokaKenichi/items/df4c8455ab527aeacf02
 
 インターネットを介してやりとり行うAPI。
@@ -62,7 +63,7 @@ curl -X POST https://api.a3rt.recruit.co.jp/talk/v1/smalltalk \
 ```
 
 下記のように表示されれば成功です 。
-```json
+```
 {
 	status: 0,
 	message: "ok",
@@ -88,8 +89,8 @@ Google Chrome を立ち上げて、Googleなどのページを表示した状態
 
 開けたらコンソールに入力できると思います。
 
-ここはN予備校の「JavaScript体験」を参考にしてください。
-https://www.nnn.ed.nico/contents/guides/5181#how-to-open-console
+ここはN予備校の[「JavaScript体験」](https://www.nnn.ed.nico/contents/guides/5181#how-to-open-console)を参考にしてください。
+
 
 ここではJavaScriptが実行できるので、上記の 「cURL」で行ったことを実行してみましょう。
 JavaScriptからリクエストを送る際は「fetch」という関数を使用します。
@@ -112,7 +113,7 @@ console.log(json);
 ```
 
 下記のような内容が返ってくれば成功です。
-```json
+```
 {status: 0, message: 'ok', results: Array(1)}
 
 message: "ok"
@@ -130,7 +131,8 @@ status: 0
 
 下記のような `index.html` と `main.js` を作成します。
 
-```html: index.html
+index.html
+```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -146,7 +148,9 @@ status: 0
 <script type="module" src="main.js"></script>
 </html>
 ```
-```js: main.js
+
+main.js
+```js
 const formdata = new FormData();
 formdata.append('apikey','AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
 formdata.append('query','おはよう');
@@ -190,8 +194,8 @@ Access to script at 'file:///C:/Users/wingr/Documents/clack/talk-api/main.js' fr
 (シーケンス図で示す)
 
 
-今回のようなエラーが発生している詳しい説明は(ここ)[https://ja.javascript.info/fetch-crossorigin]が詳しいです。
-CORSの考え方自体は(こちら)[https://developer.mozilla.org/ja/docs/Web/HTTP/CORS]を参考。
+今回のようなエラーが発生している詳しい説明は[ここ](https://ja.javascript.info/fetch-crossorigin) が詳しいです。
+CORSの考え方自体は[こちら](https://developer.mozilla.org/ja/docs/Web/HTTP/CORS) を参考。
 
 
 ### Nodeから実行する
