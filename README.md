@@ -46,12 +46,33 @@ TalkAPIもWebAPIの一つです。
 デモで発行したAPIKeyを使用して、リクエストを送ってみましょう。
 
 ### [cURL](https://curl.se/)
-まずは自分のパソコンのコンソールからリクエストを送る方法として、`cURL`というコマンドラインツールを使います
+まずは自分のパソコンのコンソールからリクエストを送る方法として、`cURL`というコマンドラインツールを使います。
 
-#### Windowsでのインストール
-コマンドプロンプトを立ち上げ下記のコマンドを実行してください
+Windowsではコマンドプロンプト、Macではターミナルを立ち上げ下記のコマンドを実行してください。
 ```
+curl --version
 ```
+
+エラーが出なければ、下記のコマンドを実行してみましょう。
+AAA... の部分は、でもで発行したAPIKeyに置き換えてください。
+```
+curl -X POST https://api.a3rt.recruit.co.jp/talk/v1/smalltalk \
+-F "apikey=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" \
+-F "query=おはよう"
+```
+
+下記のように表示されれば成功です 。
+```
+{
+	status: 0,
+	message: "ok",
+	results: [{
+		perplexity: 2.3688167429546714,
+		reply: "おはようございます"
+	}],
+}
+```
+`perplexity` の数値は違っていても大丈夫です。
 
 
 
@@ -106,73 +127,3 @@ CORS
 実際に使うAPI
 Talk API https://a3rt.recruit.co.jp/product/talkAPI/
 文字列を渡すと、ぼっとが返事をレスポンスとして返してくれる
-
-
-コラム：プログラマの仕事の一つ
-実際にこういったAPIがすでに開発済みで、このAPIを使用してブラウザに表示するものを決めるというのは一般的な仕事
-
-
-API拡張の検証
-[JavaScriptから公開APIを使ってみる]
-https://github.com/npo-clack/talk-api
-12/14 ちょっとAPIについて書いた
-curlの例あってもいいかも
-何ができるのか等言及する？
-説明より先に実際に実行するコマンドなどを優先度上
-生徒ではなく、講師が見てできるようにするのを先に
-年末年始に渡せるように  12/21の回までに作る[kannan.icon]
-高校生向けの説明は後から追加の順番
-APIの説明とかあると良さそう
-例：https://wa3.i-3-i.info/word12428.html
-
-
-
-# Tips パッケージ管理ソフトのインストール
-
-この課題ではWindowsではコマンドプロンプト、Macではターミナルというコンソールを使用します。
-ここでのコンソールとは、キーボードの入力のみで制御を行うツールです。
-
-これ以降でコンソールという言葉が出てきたら、Windowsではコマンドプロンプト、Macではターミナルと考えてください。
-
-## 事前準備
-この課題ではコンソール上でソフトウェアを動かすことがあります。
-こういったコンソール上で使用するソフトウェアをコマンドラインツールと呼んだりします。
-そういったコマンドラインツールのインストールを簡単にしてくれるのがパッケージ管理ソフトです。
-まずはパッケージ管理ソフトを導入します。
-
-### Windowsの場合
-
-[Chocolatey](https://chocolatey.org/) というソフトをインストールします。
-`Windows PowerShell` を管理者モードで立ち上げます。
-
-Windowsマークを右クリックすると下記の画像のような表示が出てくるので、そこから Windows PowerShell(管理者) をクリックしてください。
-（画像で示す）
-
-立ち上がる時に権限許可を求められるので、「はい」を選んでください。
-
-立ち上がったWindows PowerShell に下記のコマンドをコピペしてください。
-```
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-```
-Enter を押下し、途中でインストールの可否を求められたりするので「y」を入力してEnterを押して進めてください。
-
-インストールが終わったら念のため再起動して、コマンドプロンプト上で下記を実行してエラーが出ないことを確認してください。
-```
-choco -v
-```
-
-### Macの場合
-
-[brew](https://brew.sh/index_ja) というソフトをインストールします。
-`ターミナル` を立ち上げます。
-
-立ち上がったターミナルに下記のコマンドをコピペしてください
-```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-Enter を押下し、途中でインストールの可否を求められたりするので「y」を入力してEnterを押して進めてください。
-
-インストールが終わったら、ターミナル上で下記を実行してエラーが出ないことを確認してください。
-```
-brew -v
-```
