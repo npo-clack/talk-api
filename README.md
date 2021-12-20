@@ -9,36 +9,7 @@ https://a3rt.recruit.co.jp/product/demo/talkAPI_demo1/index.html
 
 ## 何をするか
 インターネット上に公開されている様々なAPIを使用する方法を学ぶ
-
-## API （Application Programming Interface） とは
-
-https://wa3.i-3-i.info/word12428.html
-
-https://developer.mozilla.org/ja/docs/Glossary/API
-
-詳解: https://developer.mozilla.org/ja/docs/Learn/JavaScript/Client-side_web_APIs/Introduction
-
-コンピュータ間やプログラム間でのやりとりする際の決め事全般を指す。
-
-例えば、人間同士でも海外の人とオンラインミーティングのスケジュールを調整することを考えると、
-ミーティングの時間を決める前にどこ時間で話すのかを決める必要があります。（日本時間？アメリカ時間？インド時間？）
-
-コンピュータは人間ほどに融通が聞かないので、そのタイミングでどこ時間と伝えるのではなく、
-先にどこ時間で聞いてくださいと決めていたりします。
-こういった他のコンピュータに対して質問したりする際の決め事をAPIの元の意味としてあります。
-
-しかしながら、現状プログラミングを行う際のAPIというのはさらに広い意味で使われることが多いです。
-その中でも今回は WebAPIを使っていきます。
-
-## Web API
-
->厳格な定義はないが、広義にはHTTPプロトコルを用いてネットワーク越しに呼び出すアプリケーション間、システム間のインターフェースのこと。
-> APIの機能はわかっているけれども、その中身の実際の動作は詳しくわからない(知らなくてもよい)機能の塊を、外部から呼び出す仕様のことを指す。また、上記図の右側の「呼ばれる側のシステム」そのものをWeb APIと呼ぶこともある。
-
-from* https://qiita.com/NagaokaKenichi/items/df4c8455ab527aeacf02
-
-インターネットを介してやりとり行うAPI。
-その中でも広く使われているHTTP通信を用いてやりとりするもののことを今回は使ってやっていきます。
+APIについては[こちら](Draft.md)で解説。
 
 # 手順
 
@@ -200,44 +171,48 @@ CORSの考え方自体は[こちら](https://developer.mozilla.org/ja/docs/Web/H
 
 ### Nodeから実行する
 
-Nodeについて → N予備校の項目を参照
+#### Nodeのインストール
 
-Nodeのインストール方法
-Win/ Mac でバージョン固定
+今回のこのエラーを回避するために使用するサーバーとしてブラウザとほぼ同じようにJavaScriptが使用できる「Node」を使用します。
 
-npm init して、必要なpackageを入れる
-n予備校でやってるから参考にする
+Nodeについての詳細は、N予備校サーバーサイドプログラミング入門の02節を確認してください
+https://www.nnn.ed.nico/courses/999/chapters/13382
+(Dockerの部分などの理解は現状では不要です)
 
+まずは、Nodeのインストールを行います。
+[Nodeのダウンロードページ](https://nodejs.org/download/release/v16.13.1/) からインストーラーをダウンロードして実行してください。
+もしくは下記のリンクを使用。
 
+- Windows: https://nodejs.org/download/release/v16.13.1/node-v16.13.1-x64.msi
+- Mac: https://nodejs.org/download/release/v16.13.1/node-v16.13.1.pkg
 
-
-
-## HTTP通信
-N予備校入門コースの2章の10節 HTTP通信を確認しよう。
-→ https://www.nnn.ed.nico/courses/999/chapters/13381
-
-必要な知識
-HTTPリクエスト（メッセージ）
-	https://developer.mozilla.org/ja/docs/Web/HTTP/Messages
-JavaScriptでのHTTPリクエスト
-	https://developer.mozilla.org/ja/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data
-	ajax, fetch
-	以下でとりあえずリクエストできる
-
+インストールができたら、Windowsの場合はコマンドプロンプト、Macの場合はターミナルを起動して下記のコマンドを実行してください。
 ```
- const response = await fetch('https://jsonplaceholder.typicode.com/posts/1')
- console.log(await response.json())
+node -v
 ```
 
-リクエストヘッダー
-	APIを使うときの認証とか
-	ない場合もあるが、ほとんどある気がする
-	https://developer.mozilla.org/ja/docs/Web/HTTP/Headers
+実行結果が下記のようになればインストール完了です。
+```
+v16.13.1
+```
 
-CORS
-	提供APIを使っている場合は問題は起こりにくいが、自分でサーバー立ててる時にエラーが起こる原因
-	https://developer.mozilla.org/ja/docs/Web/HTTP/CORS
+#### Nodeでの実行
 
-実際に使うAPI
-Talk API https://a3rt.recruit.co.jp/product/talkAPI/
-文字列を渡すと、ぼっとが返事をレスポンスとして返してくれる
+Nodeのインストールが実行出来たら、Google Chromeで実行したものと同等のことを行ってみましょう
+
+`main.js` という名前でファイルを作成して保存します。
+
+main.js
+```js
+const formdata = new FormData();
+formdata.append('apikey','AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+formdata.append('query','おはよう');
+
+const response = await fetch('https://api.a3rt.recruit.co.jp/talk/v1/smalltalk',{
+	method: 'post',
+	body: formdata,
+});
+
+const json = await response.json();
+console.log(json);
+```
