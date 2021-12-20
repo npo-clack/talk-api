@@ -83,7 +83,8 @@ curl -X POST https://api.a3rt.recruit.co.jp/talk/v1/smalltalk \
 
 Google Chrome を立ち上げて、Googleなどのページを表示した状態でデベロッパーコンソールを開いてください。
 デベロッパーツールは右上の三点リーダーから「その他のツール」→「デベロッパーツール」として開けます。
-（画像）
+
+![googlechrome_developertools](https://user-images.githubusercontent.com/26959415/146707447-760f7fa0-2647-4b11-aeda-1018390ea963.png)
 
 開けたらコンソールに入力できると思います。
 
@@ -170,7 +171,8 @@ index.html をGoogle Chromeで開いてみましょう。
 ```
 Access to script at 'file:///C:/Users/wingr/Documents/clack/talk-api/main.js' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https.
 ```
-(画像)
+![googlechrome_errorfetch_onlocalfile](https://user-images.githubusercontent.com/26959415/146707483-80c10375-b9fe-4a83-941d-4b27eb223750.png)
+
 
 これはCORS(Cross-Origin Resource Sharing) によるエラーが発生しています。
 
