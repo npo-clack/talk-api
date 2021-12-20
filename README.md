@@ -62,7 +62,7 @@ curl -X POST https://api.a3rt.recruit.co.jp/talk/v1/smalltalk \
 ```
 
 下記のように表示されれば成功です 。
-```
+```json
 {
 	status: 0,
 	message: "ok",
@@ -96,7 +96,7 @@ JavaScriptからリクエストを送る際は「fetch」という関数を使�
 fetch: https://developer.mozilla.org/ja/docs/Web/API/Fetch_API/Using_Fetch
 
 下記のようにコンソールに入力して実行してみてください。
-```
+```js
 const formdata = new FormData();
 formdata.append('apikey','AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
 formdata.append('query','おはよう');
@@ -111,7 +111,7 @@ console.log(json);
 ```
 
 下記のような内容が返ってくれば成功です。
-```
+```json
 {status: 0, message: 'ok', results: Array(1)}
 
 message: "ok"
@@ -124,9 +124,73 @@ status: 0
 
 ### JavaScriptファイルからの実行
 
-失敗する
-CORSの補足をする
-https://ja.javascript.info/fetch-crossorigin
+次は自分で作成したWebページからJavaScriptの実行をしてみましょう。
+(レポジトリ内のtestディレクトリ以下に同じファイルを置いています。)
+
+下記のような `index.html` と `main.js` を作成します。
+
+```html: index.html
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    テストページ
+    <div id="result"></div>
+</body>
+<script type="module" src="main.js"></script>
+</html>
+```
+```js: main.js
+const formdata = new FormData();
+formdata.append('apikey','AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+formdata.append('query','おはよう');
+
+const response = await fetch('https://api.a3rt.recruit.co.jp/talk/v1/smalltalk',{
+	method: 'post',
+	body: formdata,
+});
+
+const json = await response.json();
+console.log(json);
+
+const result = document.getElementById("result");
+result.innerHTML = `${json.results[0].reply}`;
+```
+
+index.html をGoogle Chromeで開いてみましょう。
+
+テストページという表示だけが出て、他はなにも表示されていないと思います。
+デベロッパーツールを確認してみてください、下記のようなエラーが出ていると思います
+
+```
+Access to script at 'file:///C:/Users/wingr/Documents/clack/talk-api/main.js' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https.
+```
+(画像)
+
+これはCORS(Cross-Origin Resource Sharing) によるエラーが発生しています。
+
+今回のエラーの内容を簡単に説明すると、ブラウザは特定のスキーマ(`http://`, `https://`など)以外で公開されているWebページからのリクエストを許可していません。
+今回の場合は、自分のパソコン上のファイルを開いているだけなので上記の制限に引っ掛かりエラーが発生しています。(スキーマは`file://`。)
+
+ブラウザのコンソールから実行することに関しては、そのコンソールを開いているページのURLを参照するのでエラーが発生しませんでした。空のページでもコンソールを使えますが、その場合はエラーが発生します。
+
+また実際にWebページを公開したとしても、他のCORSの制限として同じ名前がついている場所へのリクエストしか許可しないというものがあります。
+たとえば、 `https://example.com/` という場所で公開されている場合は、`https://example.com/abc` という場所へのリクエストはできますが、`https://example.co.jp/abc` 	という場所へのリクエストは行えません。
+
+このようなCORSの制限はブラウザ上でのことなので、`cURL`のようなブラウザ以外のソフトウェアからリクエストを送る場合には当てはまりません。
+そのため、CORSエラーを回避するために同じ場所にサーバーを用意し、ブラウザからはそのサーバーに対してリクエストを送り、サーバーが外部に対してリクエストを送るという順序がとられることが多いです。
+
+(シーケンス図で示す)
+
+
+今回のようなエラーが発生している詳しい説明は(ここ)[https://ja.javascript.info/fetch-crossorigin]が詳しいです。
+CORSの考え方自体は(こちら)[https://developer.mozilla.org/ja/docs/Web/HTTP/CORS]を参考。
+
 
 ### Nodeから実行する
 
