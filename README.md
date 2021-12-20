@@ -200,10 +200,14 @@ v16.13.1
 
 Nodeのインストールが実行出来たら、Google Chromeで実行したものと同等のことを行ってみましょう
 
-`main.js` という名前でファイルを作成して保存します。
+`main.js` という名前でファイルを作成して、下記の内容で保存します。
+APIKeyの部分はデモで発行したものに書き換えてください。
 
 main.js
 ```js
+import fetch from "node-fetch";
+import FormData from "form-data";
+
 const formdata = new FormData();
 formdata.append('apikey','AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
 formdata.append('query','おはよう');
@@ -216,3 +220,44 @@ const response = await fetch('https://api.a3rt.recruit.co.jp/talk/v1/smalltalk',
 const json = await response.json();
 console.log(json);
 ```
+
+次に `package.json` というファイルを下記の内容で作成します。
+このファイルはmain.jsと同じディレクト内で作成してください。
+
+package.json
+```
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "main": "node --experimental-vm-modules main.js",
+  },
+  "type": "module",
+  "dependencies": {
+    "form-data": "^4.0.0",
+    "node-fetch": "^3.1.0"
+  }
+}
+```
+
+作成したらpackage.jsonと同じディレクトリで下記のコマンドを実行してください
+```
+npm install
+```
+
+エラーなく完了したら、下記のコマンドを試してみましょう。
+```
+node --experimental-vm-modules main.js
+```
+
+警告などがでるかもしれませんが、下記のようにcURLを実行したときと同じような結果が得られるはずです。
+```
+{
+  status: 0,
+  message: 'ok',
+  results: [ { perplexity: 0.07743213382788067, reply: 'おはようございます' } ]
+}
+```
+
+### Nodeでサーバーを実行する
