@@ -161,7 +161,7 @@ Access to script at 'file:///C:/Users/wingr/Documents/clack/talk-api/main.js' fr
 
 このようなCORSの制限はブラウザ上でのことなので、`cURL`のようなブラウザ以外のソフトウェアからリクエストを送る場合には当てはまりません。
 そのため、CORSエラーを回避するために同じ場所にサーバーを用意し、ブラウザからはそのサーバーに対してリクエストを送り、サーバーが外部に対してリクエストを送るという順序がとられることが多いです。
-
+今回は最後に下記の図のような形をとるようにします。
 
 ![test](https://user-images.githubusercontent.com/26959415/146918576-7870b056-6431-4aca-8b28-1aa4337190e1.png)
 
@@ -232,7 +232,7 @@ package.json
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "main": "node --experimental-vm-modules index.js",
+    "main": "node index.js",
   },
   "type": "module",
   "dependencies": {
@@ -249,7 +249,7 @@ npm install
 
 エラーなく完了したら、下記のコマンドを試してみましょう。
 ```
-node --experimental-vm-modules index.js
+node index.js
 ```
 
 警告などがでるかもしれませんが、下記のようにcURLを実行したときと同じような結果が得られるはずです。
@@ -262,3 +262,188 @@ node --experimental-vm-modules index.js
 ```
 
 ### Nodeでサーバーを実行する
+
+次はNodeでサーバーを実行して、Webページを配信できる状態を作ります。
+
+まずは、package.jsonの修正を行います。
+
+package.json
+```
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "main": "node index.js"
+  },
+  "type": "module",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "form-data": "^4.0.0",
+    "node-fetch": "^3.1.0"
+  }
+}
+```
+
+作成したらpackage.jsonと同じディレクトリで下記のコマンドを実行してください
+```
+npm install
+```
+
+補足: サーバーとして「[express](https://expressjs.com/ja/)」というWebフレームワークを使用します。
+
+ここからはindex.jsを作り替えていきます。
+最初にサーバーの動作確認をします。
+index.js を下記のように変更してください。
+
+index.js
+```js
+import path from 'path';
+import cors from 'cors';
+import express from 'express';
+import fetch from 'node-fetch';
+import FormData from "form-data";
+
+// 使用しないのでコメントアウト
+// const formdata = new FormData();
+// formdata.append('apikey','AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+// formdata.append('query','おはよう');
+
+// const response = await fetch('https://api.a3rt.recruit.co.jp/talk/v1/smalltalk',{
+// 	method: 'post',
+// 	body: formdata,
+// });
+
+// const json = await response.json();
+// console.log(json);
+
+const app = express();
+
+app.get("/api", (req, res, next) => {
+    res.json("hello world");
+});
+
+const server = app.listen(3000, () => {
+	const address = server.address();
+    console.log(`http://localhost:${address.port} でサーバーを実行しています`);
+});
+
+```
+
+変更出来たら下記のコマンドを実行してください
+```
+node index.js
+```
+
+下記のような表示になって、コンソールに入力などができない状態になっていればOKです。
+```
+http://localhost:3000 でサーバーを実行しています
+```
+
+この状態で、ブラウザーのアドレスバーに `http://localhost:3000/api` と入力してみましょう。
+下記の画像のように出れば成功です。
+
+(googlechrome_nodeserver_test の画像を入れる) 
+
+ 一度サーバーを終了させます。
+ コンソールに移って、「Ctrl+C」を押してください。
+再度コンソールに文字が入力できる状態になっていればOKです。
+
+
+次に作成したWebページ(HTMLなど)を表示します。
+まずは、index.js と同じディレクトリに public というディレクトリを作成してください。
+そしてその中に index.html, main.js を作成してください。
+
+下記のようなディレクトリの状態になっていればOKです。
+
+(vscode_public_test の画像を入れる)
+
+publicディレクトリ内のindex.htmlとmain.jsの内容は下記のようにしておいて下さい
+
+index.html
+```html
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    テストページ
+    <div id="result"></div>
+</body>
+<script type="module" src="main.js"></script>
+</html>
+```
+
+main.js
+```js
+const formdata = new FormData();
+formdata.append('apikey','AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+formdata.append('query','おはよう');
+
+const response = await fetch('https://api.a3rt.recruit.co.jp/talk/v1/smalltalk',{
+	method: 'post',
+	body: formdata,
+});
+
+const json = await response.json();
+console.log(json);
+
+const result = document.getElementById("result");
+result.innerHTML = `${json.results[0].reply}`;
+```
+
+サーバーがこれらのファイルを配信できるように index.js を書き換えます。
+
+index.js
+```js
+import path from 'path';
+import cors from 'cors';
+import express from 'express';
+import fetch from 'node-fetch';
+import FormData from "form-data";
+
+// コメントアウトした分は削除してOK
+
+const app = express();
+app.use(express.static(path.resolve('public'))); //  追加した行
+
+app.get("/api", (req, res, next) => {
+    res.json("hello world");
+});
+
+const server = app.listen(3000, () => {
+	const address = server.address();
+    console.log(`http://localhost:${address.port} でサーバーを実行しています`);
+});
+
+```
+
+変更出来たらまた下記のコマンドを実行してください
+```
+node index.js
+```
+
+この状態で次は、ブラウザーのアドレスバーに `http://localhost:3000` と入力してみましょう。
+下記の画像のように出れば成功です。
+
+(googlechrome_nodeserver_testhtml の画像を入れる) 
+
+
+### 一連の流れを作る
+
+もう一度エラーが発生したときに示した図を確認します
+
+![test](https://user-images.githubusercontent.com/26959415/146918576-7870b056-6431-4aca-8b28-1aa4337190e1.png)
+
+この図の流れに沿うように、NodeJSサーバーを作りましょう。
+
+
+最後にブラウザからNodeサーバーにリクエストを送って、NodeサーバーがTalkAPIサーバーにリクエストし、TalkAPIサーバーからのレスポンスをNodeサーバーを受け取り、Nodeサーバーがさらにブラウザにレスポンスを返すところ一連の流れを作ります。
+
+
+
