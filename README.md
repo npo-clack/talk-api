@@ -162,7 +162,8 @@ Access to script at 'file:///C:/Users/wingr/Documents/clack/talk-api/main.js' fr
 このようなCORSの制限はブラウザ上でのことなので、`cURL`のようなブラウザ以外のソフトウェアからリクエストを送る場合には当てはまりません。
 そのため、CORSエラーを回避するために同じ場所にサーバーを用意し、ブラウザからはそのサーバーに対してリクエストを送り、サーバーが外部に対してリクエストを送るという順序がとられることが多いです。
 
-(シーケンス図で示す)
+
+![test](https://user-images.githubusercontent.com/26959415/146918576-7870b056-6431-4aca-8b28-1aa4337190e1.png)
 
 
 今回のようなエラーが発生している詳しい説明は[ここ](https://ja.javascript.info/fetch-crossorigin) が詳しいです。
