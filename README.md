@@ -1,20 +1,21 @@
 # talk-api
 
-## 完成デモ
-まずはここでAPIKeyを発行してください（メールアドレスが必要です）
-https://a3rt.recruit.co.jp/product/talkAPI/registered/
+## デモ
+まずは[ここ](https://a3rt.recruit.co.jp/product/talkAPI/registered/)でAPIKeyを発行してください（メールアドレスが必要です）
 
-メールアドレスにAPIKeyが送られてきたら、下記のページでデモを試してみましょう。
-https://a3rt.recruit.co.jp/product/demo/talkAPI_demo1/index.html
+メールアドレスにAPIKeyが送られてきたら、[このページ](https://a3rt.recruit.co.jp/product/demo/talkAPI_demo1/index.html)でデモを試してみましょう。
 
 ## 何をするか
-インターネット上に公開されている様々なAPIを使用する方法を学ぶ
+インターネット上に公開されている様々なAPIを使用する方法を学びます。
+
 APIについては[こちら](additional/memo.md)で解説。
 
 # 手順
 
 実際にWeb APIを使ってみましょう。
+
 TalkAPIもWebAPIの一つです。
+
 デモで発行したAPIKeyを使用して、リクエストを送ってみましょう。
 
 ## curl
@@ -47,6 +48,7 @@ curl -X POST https://api.a3rt.recruit.co.jp/talk/v1/smalltalk \
 `perplexity` の数値は違っていても大丈夫です。
 
 「おはよう」の部分を変更するとその内容にそった返答が返ってくるはずです。
+
 「今日の天気は？」などでも返ってくるはず、変な返答なこともあります。。。
 
 
@@ -144,7 +146,7 @@ result.innerHTML = `${json.results[0].reply}`;
 デベロッパーツールを確認してみてください、下記のようなエラーが出ていると思います
 
 ```
-Access to script at 'file:///C:/Users/wingr/Documents/clack/talk-api/main.js' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https.
+Access to script at 'file:///C:/Users/{username}/Documents/clack/talk-api/main.js' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https.
 ```
 ![googlechrome_errorfetch_onlocalfile](https://user-images.githubusercontent.com/26959415/146707483-80c10375-b9fe-4a83-941d-4b27eb223750.png)
 
@@ -176,9 +178,8 @@ CORSの考え方自体は[こちら](https://developer.mozilla.org/ja/docs/Web/H
 
 今回のこのエラーを回避するために使用するサーバーとしてブラウザとほぼ同じようにJavaScriptが使用できる「Node」を使用します。
 
-Nodeについての詳細は、N予備校サーバーサイドプログラミング入門の02節を確認してください
-https://www.nnn.ed.nico/courses/999/chapters/13382
-(Dockerの部分などの理解は現状では不要です)
+Nodeについての詳細は、[N予備校サーバーサイドプログラミング入門](https://www.nnn.ed.nico/courses/999/chapters/13382
+)の02節を確認してください。(Dockerの部分などの理解は現状では不要です)
 
 まずは、Nodeのインストールを行います。
 [Nodeのダウンロードページ](https://nodejs.org/download/release/v16.13.1/) からインストーラーをダウンロードして実行してください。
@@ -509,11 +510,11 @@ node index.js
 GoogleChromeで下記の画像のようになれば成功です。
 (「おはようございます」が表示されるまで少し時間がかかることがあります。)
 
-(googlechrome_nodeserver_testresponse の画像を入れる)
+![googlechrome_nodeserver_testresponse](https://user-images.githubusercontent.com/26959415/146942438-4145ad4b-8545-4bd9-b283-b0563cfbc177.png)
 
 コンソールは下記の画像のようになっていると思います。
 
-(console_nodeserver_testresponse の画像を入れる)
+![console_nodeserver_testresponse](https://user-images.githubusercontent.com/26959415/146942429-fab9a2f9-8253-470d-bfb0-ac87ef297882.png)
 
 これで目的としていた一連の流れを作ることができました。
 
