@@ -265,7 +265,7 @@ node index.js
 
 次はNodeでサーバーを実行して、Webページを配信できる状態を作ります。
 
-まずは、package.jsonの修正を行います。
+まずは、package.json を下記のように修正します。
 
 package.json
 ```
@@ -278,8 +278,8 @@ package.json
   },
   "type": "module",
   "dependencies": {
-    "cors": "^2.8.5",
     "express": "^4.17.2",
+    "express-form-data": "^2.0.17",
     "form-data": "^4.0.0",
     "node-fetch": "^3.1.0"
   }
@@ -300,10 +300,10 @@ index.js を下記のように変更してください。
 index.js
 ```js
 import path from 'path';
-import cors from 'cors';
 import express from 'express';
 import fetch from 'node-fetch';
-import FormData from "form-data";
+import expressFormData from 'express-form-data';
+import FormData from 'form-data';
 
 // 使用しないのでコメントアウト
 // const formdata = new FormData();
@@ -341,7 +341,7 @@ node index.js
 http://localhost:3000 でサーバーを実行しています
 ```
 
-この状態で、ブラウザーのアドレスバーに `http://localhost:3000/api` と入力してみましょう。
+この状態で、GoogleChromeのアドレスバーに `http://localhost:3000/api` と入力してみましょう。
 下記の画像のように出れば成功です。
 
 ![googlechrome_nodeserver_testhtml](https://user-images.githubusercontent.com/26959415/146932976-3b81d5df-cff7-4f6f-81df-349b10a8d1bb.png)
@@ -402,10 +402,10 @@ result.innerHTML = `${json.results[0].reply}`;
 index.js
 ```js
 import path from 'path';
-import cors from 'cors';
 import express from 'express';
 import fetch from 'node-fetch';
-import FormData from "form-data";
+import expressFormData from 'express-form-data';
+import FormData from 'form-data';
 
 // コメントアウトした分は削除してOK
 
@@ -428,21 +428,98 @@ const server = app.listen(3000, () => {
 node index.js
 ```
 
-この状態で次は、ブラウザーのアドレスバーに `http://localhost:3000` と入力してみましょう。
+この状態で次は、GoogleChromeのアドレスバーに `http://localhost:3000` と入力してみましょう。
 下記の画像のように出れば成功です。コンソールで「Ctrl+C」でサーバーを終了させてください。
 
 ![googlechrome_nodeserver_test](https://user-images.githubusercontent.com/26959415/146932901-cfcc9ac1-00e6-42b3-8971-a353a39d8a72.png)
 
+
 ### 一連の流れを作る
 
-もう一度エラーが発生したときに示した図を確認します
+もう一度エラーが発生したときに示した図を確認します。
 
 ![test](https://user-images.githubusercontent.com/26959415/146918576-7870b056-6431-4aca-8b28-1aa4337190e1.png)
 
-この図の流れに沿うように、NodeJSサーバーを作りましょう。
+最後に、この図の流れに沿うように作っていきます。
+
+まずはGoogleChromeからのリクエスト部分です。
+publicディレクトリ以下の main.js を修正します。(index.htmlはそのままでOK)
+
+main.js
+```
+const formdata = new FormData();
+formdata.append('apikey','AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+formdata.append('query','おはよう');
+
+const response = await fetch(window.location + "talk",{ //ここだけ変更
+	method: 'post',
+	body: formdata,
+});
+
+const json = await response.json();
+console.log(json);
+
+const result = document.getElementById("result");
+result.innerHTML = `${json.results[0].reply}`;
+```
+
+次に index.js を下記のように修正します。
+
+index.js
+```js
+import path from 'path';
+import express from 'express';
+import fetch from 'node-fetch';
+import expressFormData from 'express-form-data';
+import FormData from 'form-data';
+
+const app = express();
+app.use(express.static(path.resolve('public')));
+app.use(expressFormData.parse()); // この行を追加
+
+app.get("/api", (req, res, next) => {
+	res.json("hello world");
+});
+
+// この節を追加
+app.post("/talk", async (req, res, next) => {
+	const formdata = new FormData();
+	formdata.append('apikey', req.body.apikey);
+	formdata.append('query', req.body.query);
+
+	const response = await fetch("https://api.a3rt.recruit.co.jp/talk/v1/smalltalk", {
+		method: 'post',
+		body: formdata,
+	});
+
+	const json = await response.json();
+	console.log(json);
+	res.json(json);
+});
+
+const server = app.listen(3000, () => {
+	const address = server.address();
+	console.log(`http://localhost:${address.port} でサーバーを実行しています`);
+});
+```
+
+変更出来たらまた下記のコマンドを実行してください
+```
+node index.js
+```
+
+また、GoogleChromeのアドレスバーに `http://localhost:3000` と入力してみましょう。
+GoogleChromeで下記の画像のようになれば成功です。
+
+(googlechrome_nodeserver_testresponse の画像を入れる)
+
+コンソールは下記の画像のようになっていると思います。
+
+(console_nodeserver_testresponse の画像を入れる)
+
+これで目的としていた一連の流れを作ることができました。
 
 
-最後にブラウザからNodeサーバーにリクエストを送って、NodeサーバーがTalkAPIサーバーにリクエストし、TalkAPIサーバーからのレスポンスをNodeサーバーを受け取り、Nodeサーバーがさらにブラウザにレスポンスを返すところ一連の流れを作ります。
+### 追加課題
 
-
-
+ここから、最初のデモののようにWebページでAPIトークンの入力できるようにしたり、TalkAPIにリクエストする文字列(今まではすべておはよう)をキーボードの入力されたものにするような変更をしてみましょう。
