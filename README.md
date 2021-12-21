@@ -17,8 +17,8 @@ APIについては[こちら](additional/memo.md)で解説。
 TalkAPIもWebAPIの一つです。
 デモで発行したAPIKeyを使用して、リクエストを送ってみましょう。
 
-## [cURL](https://curl.se/)
-まずは自分のパソコンのコンソールからリクエストを送る方法として、`cURL`というコマンドラインツールを使います。
+## curl
+まずは自分のパソコンのコンソールからリクエストを送る方法として、[curl](https://curl.se/) というコマンドラインツールを使います。
 
 Windowsではコマンドプロンプト、Macではターミナルを立ち上げ下記のコマンドを実行してください。
 ```
@@ -50,10 +50,11 @@ curl -X POST https://api.a3rt.recruit.co.jp/talk/v1/smalltalk \
 「今日の天気は？」などでも返ってくるはず、変な返答なこともあります。。。
 
 
-### console javascript
+### GoogleChromeのデベロッパーツールからの実行
+
 次はブラウザ上のコンソールからリクエストを送ってみます。
 
-Google Chrome を立ち上げて、Googleなどのページを表示した状態でデベロッパーコンソールを開いてください。
+GoogleChrome を立ち上げて、Googleなどのページを表示した状態でデベロッパーコンソールを開いてください。
 デベロッパーツールは右上の三点リーダーから「その他のツール」→「デベロッパーツール」として開けます。
 
 ![googlechrome_developertools](https://user-images.githubusercontent.com/26959415/146707447-760f7fa0-2647-4b11-aeda-1018390ea963.png)
@@ -63,7 +64,7 @@ Google Chrome を立ち上げて、Googleなどのページを表示した状態
 ここはN予備校の[「JavaScript体験」](https://www.nnn.ed.nico/contents/guides/5181#how-to-open-console)を参考にしてください。
 
 
-ここではJavaScriptが実行できるので、上記の 「cURL」で行ったことを実行してみましょう。
+ここではJavaScriptが実行できるので、上記の 「curl」で行ったことを実行してみましょう。
 JavaScriptからリクエストを送る際は「fetch」という関数を使用します。
 
 fetch: https://developer.mozilla.org/ja/docs/Web/API/Fetch_API/Using_Fetch
@@ -71,10 +72,10 @@ fetch: https://developer.mozilla.org/ja/docs/Web/API/Fetch_API/Using_Fetch
 下記のようにコンソールに入力して実行してみてください。
 ```js
 const formdata = new FormData();
-formdata.append('apikey','AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-formdata.append('query','おはよう');
+formdata.append('apikey', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+formdata.append('query', 'おはよう');
 
-const response = await fetch('https://api.a3rt.recruit.co.jp/talk/v1/smalltalk',{
+const response = await fetch(window.location + "talk", {
 	method: 'post',
 	body: formdata,
 });
@@ -98,7 +99,6 @@ status: 0
 ### JavaScriptファイルからの実行
 
 次は自分で作成したWebページからJavaScriptの実行をしてみましょう。
-(レポジトリ内のtestディレクトリ以下に同じファイルを置いています。)
 
 下記のような `index.html` と `main.js` を作成します。
 
@@ -123,10 +123,10 @@ index.html
 main.js
 ```js
 const formdata = new FormData();
-formdata.append('apikey','AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-formdata.append('query','おはよう');
+formdata.append('apikey', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+formdata.append('query', 'おはよう');
 
-const response = await fetch('https://api.a3rt.recruit.co.jp/talk/v1/smalltalk',{
+const response = await fetch(window.location + "talk", {
 	method: 'post',
 	body: formdata,
 });
@@ -138,7 +138,7 @@ const result = document.getElementById("result");
 result.innerHTML = `${json.results[0].reply}`;
 ```
 
-index.html をGoogle Chromeで開いてみましょう。
+`index.html` をGoogle Chromeで開いてみましょう。
 
 テストページという表示だけが出て、他はなにも表示されていないと思います。
 デベロッパーツールを確認してみてください、下記のようなエラーが出ていると思います
@@ -159,7 +159,7 @@ Access to script at 'file:///C:/Users/wingr/Documents/clack/talk-api/main.js' fr
 また実際にWebページを公開したとしても、他のCORSの制限として同じ名前がついている場所へのリクエストしか許可しないというものがあります。
 たとえば、 `https://example.com/` という場所で公開されている場合は、`https://example.com/abc` という場所へのリクエストはできますが、`https://example.co.jp/abc` 	という場所へのリクエストは行えません。
 
-このようなCORSの制限はブラウザ上でのことなので、`cURL`のようなブラウザ以外のソフトウェアからリクエストを送る場合には当てはまりません。
+このようなCORSの制限はブラウザ上でのことなので、`curl`のようなブラウザ以外のソフトウェアからリクエストを送る場合には当てはまりません。
 そのため、CORSエラーを回避するために同じ場所にサーバーを用意し、ブラウザからはそのサーバーに対してリクエストを送り、サーバーが外部に対してリクエストを送るという順序がとられることが多いです。
 今回は最後に下記の図のような形をとるようにします。
 
@@ -199,7 +199,7 @@ v16.13.1
 
 #### Nodeでの実行
 
-Nodeのインストールが実行出来たら、Google Chromeで実行したものと同等のことを行ってみましょう
+Nodeのインストールが実行出来たら、GoogleChromeのデベロッパーツールで実行したものと同等のことを行ってみましょう
 
 `index.js` という名前でファイルを作成して、下記の内容で保存します。
 APIKeyの部分はデモで発行したものに書き換えてください。
@@ -210,39 +210,39 @@ import fetch from "node-fetch";
 import FormData from "form-data";
 
 const formdata = new FormData();
-formdata.append('apikey','AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-formdata.append('query','おはよう');
+formdata.append('apikey', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+formdata.append('query', 'おはよう');
 
-const response = await fetch('https://api.a3rt.recruit.co.jp/talk/v1/smalltalk',{
-	method: 'post',
-	body: formdata,
+const response = await fetch('https://api.a3rt.recruit.co.jp/talk/v1/smalltalk', {
+    method: 'post',
+    body: formdata,
 });
 
 const json = await response.json();
 console.log(json);
 ```
 
-次に `package.json` というファイルを下記の内容で作成します。
-このファイルは index.js と同じディレクト内で作成してください。
+次に `package.json` を下記の内容で作成してください。
+(このファイルは `index.js` と同じディレクトリ内にある必要があります。)
 
 package.json
 ```
 {
-  "name": "test",
-  "version": "1.0.0",
-  "description": "",
-  "scripts": {
-    "main": "node index.js",
-  },
-  "type": "module",
-  "dependencies": {
-    "form-data": "^4.0.0",
-    "node-fetch": "^3.1.0"
-  }
+    "name": "test",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "main": "node index.js"
+    },
+    "type": "module",
+    "dependencies": {
+        "form-data": "^4.0.0",
+        "node-fetch": "^3.1.0"
+    }
 }
 ```
 
-作成したらpackage.jsonと同じディレクトリで下記のコマンドを実行してください
+作成したら `package.json` と同じディレクトリで下記のコマンドを実行してください
 ```
 npm install
 ```
@@ -252,7 +252,7 @@ npm install
 node index.js
 ```
 
-警告などがでるかもしれませんが、下記のようにcURLを実行したときと同じような結果が得られるはずです。
+警告などがでるかもしれませんが、下記のようにcurlを実行したときと同じような結果が得られるはずです。
 ```
 {
   status: 0,
@@ -264,38 +264,36 @@ node index.js
 ### Nodeでサーバーを実行する
 
 次はNodeでサーバーを実行して、Webページを配信できる状態を作ります。
+補足: サーバーとして「[express](https://expressjs.com/ja/)」というWebフレームワークを使用します。
 
-まずは、package.json を下記のように修正します。
+まずは、`package.json` を下記のように修正します。
 
 package.json
 ```
 {
-  "name": "test",
-  "version": "1.0.0",
-  "description": "",
-  "scripts": {
-    "main": "node index.js"
-  },
-  "type": "module",
-  "dependencies": {
-    "express": "^4.17.2",
-    "express-form-data": "^2.0.17",
-    "form-data": "^4.0.0",
-    "node-fetch": "^3.1.0"
-  }
+    "name": "test",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "main": "node index.js"
+    },
+    "type": "module",
+    "dependencies": {
+        "express": "^4.17.2",
+        "express-form-data": "^2.0.17",
+        "form-data": "^4.0.0",
+        "node-fetch": "^3.1.0"
+    }
 }
 ```
 
-作成したらpackage.jsonと同じディレクトリで下記のコマンドを実行してください
+作成したら `package.json` と同じディレクトリで下記のコマンドを実行してください
 ```
 npm install
 ```
 
-補足: サーバーとして「[express](https://expressjs.com/ja/)」というWebフレームワークを使用します。
-
-ここからはindex.jsを作り替えていきます。
-最初にサーバーの動作確認をします。
-index.js を下記のように変更してください。
+ここからは `index.js` を作り替えていきます。
+最初にサーバーの動作確認をします。 `index.js` を下記のように変更してください。
 
 index.js
 ```js
@@ -325,10 +323,9 @@ app.get("/api", (req, res, next) => {
 });
 
 const server = app.listen(3000, () => {
-	const address = server.address();
+    const address = server.address();
     console.log(`http://localhost:${address.port} でサーバーを実行しています`);
 });
-
 ```
 
 変更出来たら下記のコマンドを実行してください
@@ -344,7 +341,7 @@ http://localhost:3000 でサーバーを実行しています
 この状態で、GoogleChromeのアドレスバーに `http://localhost:3000/api` と入力してみましょう。
 下記の画像のように出れば成功です。
 
-![googlechrome_nodeserver_testhtml](https://user-images.githubusercontent.com/26959415/146932976-3b81d5df-cff7-4f6f-81df-349b10a8d1bb.png)
+![googlechrome_nodeserver_test](https://user-images.githubusercontent.com/26959415/146932901-cfcc9ac1-00e6-42b3-8971-a353a39d8a72.png)
 
  一度サーバーを終了させます。
  コンソールに移って、「Ctrl+C」を押してください。
@@ -352,14 +349,15 @@ http://localhost:3000 でサーバーを実行しています
 
 
 次に作成したWebページ(HTMLなど)を表示します。
-まずは、index.js と同じディレクトリに public というディレクトリを作成してください。
-そしてその中に index.html, main.js を作成してください。
+まずは、`index.js` と同じディレクトリに `public` というディレクトリを作成してください。
+そしてその中に `index.html`, `main.js` を作成してください。
+(これらは、「JavaScriptファイルからの実行」の節で作成したものを移動しても構いません。)
 
 下記のようなディレクトリの状態になっていればOKです。
 
 ![vscode_directory_test](https://user-images.githubusercontent.com/26959415/146932945-d96beb75-abcf-444b-aed3-031ceb75de24.png)
 
-publicディレクトリ内のindex.htmlとmain.jsの内容は下記のようにしておいて下さい
+`public`ディレクトリ内の `index.html` と `main.js` の内容は下記のようにしておいて下さい
 
 index.html
 ```html
@@ -382,12 +380,12 @@ index.html
 main.js
 ```js
 const formdata = new FormData();
-formdata.append('apikey','AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-formdata.append('query','おはよう');
+formdata.append('apikey', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+formdata.append('query', 'おはよう');
 
-const response = await fetch('https://api.a3rt.recruit.co.jp/talk/v1/smalltalk',{
-	method: 'post',
-	body: formdata,
+const response = await fetch('https://api.a3rt.recruit.co.jp/talk/v1/smalltalk', {
+    method: 'post',
+    body: formdata,
 });
 
 const json = await response.json();
@@ -397,7 +395,7 @@ const result = document.getElementById("result");
 result.innerHTML = `${json.results[0].reply}`;
 ```
 
-サーバーがこれらのファイルを配信できるように index.js を書き換えます。
+サーバーがこれらのファイルを配信できるように `index.js` を書き換えます。
 
 index.js
 ```js
@@ -417,10 +415,9 @@ app.get("/api", (req, res, next) => {
 });
 
 const server = app.listen(3000, () => {
-	const address = server.address();
+    const address = server.address();
     console.log(`http://localhost:${address.port} でサーバーを実行しています`);
 });
-
 ```
 
 変更出来たらまた下記のコマンドを実行してください
@@ -431,7 +428,7 @@ node index.js
 この状態で次は、GoogleChromeのアドレスバーに `http://localhost:3000` と入力してみましょう。
 下記の画像のように出れば成功です。コンソールで「Ctrl+C」でサーバーを終了させてください。
 
-![googlechrome_nodeserver_test](https://user-images.githubusercontent.com/26959415/146932901-cfcc9ac1-00e6-42b3-8971-a353a39d8a72.png)
+![googlechrome_nodeserver_testhtml](https://user-images.githubusercontent.com/26959415/146932976-3b81d5df-cff7-4f6f-81df-349b10a8d1bb.png)
 
 
 ### 一連の流れを作る
@@ -443,15 +440,15 @@ node index.js
 最後に、この図の流れに沿うように作っていきます。
 
 まずはGoogleChromeからのリクエスト部分です。
-publicディレクトリ以下の main.js を修正します。(index.htmlはそのままでOK)
+`public`ディレクトリ以下の `main.js` を修正します。(`index.html`はそのままでOK)
 
 main.js
-```
+```js
 const formdata = new FormData();
-formdata.append('apikey','AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-formdata.append('query','おはよう');
+formdata.append('apikey', 'DZZlK4na6kWXu9MgW44pqf9NeMIFCNjD');
+formdata.append('query', 'おはよう');
 
-const response = await fetch(window.location + "talk",{ //ここだけ変更
+const response = await fetch(window.location + "talk", {
 	method: 'post',
 	body: formdata,
 });
@@ -463,7 +460,7 @@ const result = document.getElementById("result");
 result.innerHTML = `${json.results[0].reply}`;
 ```
 
-次に index.js を下記のように修正します。
+次に `index.js` を下記のように修正します。
 
 index.js
 ```js
@@ -478,28 +475,28 @@ app.use(express.static(path.resolve('public')));
 app.use(expressFormData.parse()); // この行を追加
 
 app.get("/api", (req, res, next) => {
-	res.json("hello world");
+    res.json("hello world");
 });
 
 // この節を追加
 app.post("/talk", async (req, res, next) => {
-	const formdata = new FormData();
-	formdata.append('apikey', req.body.apikey);
-	formdata.append('query', req.body.query);
+    const formdata = new FormData();
+    formdata.append('apikey', req.body.apikey);
+    formdata.append('query', req.body.query);
 
-	const response = await fetch("https://api.a3rt.recruit.co.jp/talk/v1/smalltalk", {
-		method: 'post',
-		body: formdata,
-	});
+    const response = await fetch("https://api.a3rt.recruit.co.jp/talk/v1/smalltalk", {
+        method: 'post',
+        body: formdata,
+    });
 
-	const json = await response.json();
-	console.log(json);
-	res.json(json);
+    const json = await response.json();
+    console.log(json);
+    res.json(json);
 });
 
 const server = app.listen(3000, () => {
-	const address = server.address();
-	console.log(`http://localhost:${address.port} でサーバーを実行しています`);
+    const address = server.address();
+    console.log(`http://localhost:${address.port} でサーバーを実行しています`);
 });
 ```
 
@@ -510,6 +507,7 @@ node index.js
 
 また、GoogleChromeのアドレスバーに `http://localhost:3000` と入力してみましょう。
 GoogleChromeで下記の画像のようになれば成功です。
+(「おはようございます」が表示されるまで少し時間がかかることがあります。)
 
 (googlechrome_nodeserver_testresponse の画像を入れる)
 
