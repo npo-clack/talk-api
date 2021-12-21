@@ -9,7 +9,7 @@ https://a3rt.recruit.co.jp/product/demo/talkAPI_demo1/index.html
 
 ## 何をするか
 インターネット上に公開されている様々なAPIを使用する方法を学ぶ
-APIについては[こちら](Draft.md)で解説。
+APIについては[こちら](additional/memo.md)で解説。
 
 # 手順
 
