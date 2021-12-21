@@ -446,7 +446,7 @@ node index.js
 main.js
 ```js
 const formdata = new FormData();
-formdata.append('apikey', 'DZZlK4na6kWXu9MgW44pqf9NeMIFCNjD');
+formdata.append('apikey', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
 formdata.append('query', 'おはよう');
 
 const response = await fetch(window.location + "talk", {
