@@ -1,5 +1,8 @@
 @startuml test
-title シーケンス図
-アリス -> ボブ: リクエスト
-ボブ --> アリス: レスポンス
+title NodeJSを使った構成
+GoogleChrome -> NodeJSサーバー: リクエスト(同じ場所なのでOK)
+GoogleChrome -x  TalkAPIサーバー: リクエスト(CORS違反で失敗)
+NodeJSサーバー -> TalkAPIサーバー: リクエスト(PCからなのでOK)
+TalkAPIサーバー --> NodeJSサーバー: レスポンス
+NodeJSサーバー --> GoogleChrome: レスポンス
 @enduml
