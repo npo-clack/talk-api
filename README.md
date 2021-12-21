@@ -344,7 +344,7 @@ http://localhost:3000 でサーバーを実行しています
 この状態で、ブラウザーのアドレスバーに `http://localhost:3000/api` と入力してみましょう。
 下記の画像のように出れば成功です。
 
-(googlechrome_nodeserver_test の画像を入れる) 
+![googlechrome_nodeserver_testhtml](https://user-images.githubusercontent.com/26959415/146932976-3b81d5df-cff7-4f6f-81df-349b10a8d1bb.png)
 
  一度サーバーを終了させます。
  コンソールに移って、「Ctrl+C」を押してください。
@@ -357,7 +357,7 @@ http://localhost:3000 でサーバーを実行しています
 
 下記のようなディレクトリの状態になっていればOKです。
 
-(vscode_public_test の画像を入れる)
+![vscode_directory_test](https://user-images.githubusercontent.com/26959415/146932945-d96beb75-abcf-444b-aed3-031ceb75de24.png)
 
 publicディレクトリ内のindex.htmlとmain.jsの内容は下記のようにしておいて下さい
 
@@ -429,10 +429,9 @@ node index.js
 ```
 
 この状態で次は、ブラウザーのアドレスバーに `http://localhost:3000` と入力してみましょう。
-下記の画像のように出れば成功です。
+下記の画像のように出れば成功です。コンソールで「Ctrl+C」でサーバーを終了させてください。
 
-(googlechrome_nodeserver_testhtml の画像を入れる) 
-
+![googlechrome_nodeserver_test](https://user-images.githubusercontent.com/26959415/146932901-cfcc9ac1-00e6-42b3-8971-a353a39d8a72.png)
 
 ### 一連の流れを作る
 
