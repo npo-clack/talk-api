@@ -12,9 +12,9 @@ APIについては[こちら](additional/memo.md)で解説。
 
 # 手順
 
-実際にWeb APIを使ってみましょう。
+実際にAPIを使ってみましょう。
 
-TalkAPIもWebAPIの一つです。
+TalkAPIもAPIの一つです。
 
 デモで発行したAPIKeyを使用して、リクエストを送ってみましょう。
 
