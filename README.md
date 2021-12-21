@@ -200,10 +200,10 @@ v16.13.1
 
 Nodeのインストールが実行出来たら、Google Chromeで実行したものと同等のことを行ってみましょう
 
-`main.js` という名前でファイルを作成して、下記の内容で保存します。
+`index.js` という名前でファイルを作成して、下記の内容で保存します。
 APIKeyの部分はデモで発行したものに書き換えてください。
 
-main.js
+index.js
 ```js
 import fetch from "node-fetch";
 import FormData from "form-data";
@@ -222,7 +222,7 @@ console.log(json);
 ```
 
 次に `package.json` というファイルを下記の内容で作成します。
-このファイルはmain.jsと同じディレクト内で作成してください。
+このファイルは index.js と同じディレクト内で作成してください。
 
 package.json
 ```
@@ -231,7 +231,7 @@ package.json
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "main": "node --experimental-vm-modules main.js",
+    "main": "node --experimental-vm-modules index.js",
   },
   "type": "module",
   "dependencies": {
@@ -248,7 +248,7 @@ npm install
 
 エラーなく完了したら、下記のコマンドを試してみましょう。
 ```
-node --experimental-vm-modules main.js
+node --experimental-vm-modules index.js
 ```
 
 警告などがでるかもしれませんが、下記のようにcURLを実行したときと同じような結果が得られるはずです。

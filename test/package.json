@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "main": "node --experimental-vm-modules main.js"
+    "main": "node --experimental-vm-modules index.js"
   },
   "type": "module",
   "dependencies": {
