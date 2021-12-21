@@ -18,7 +18,8 @@ TalkAPIもAPIの一つです。
 
 デモで発行したAPIKeyを使用して、リクエストを送ってみましょう。
 
-## curl
+## コマンドラインツールからの実行(curl)
+
 まずは自分のパソコンのコンソールからリクエストを送る方法として、[curl](https://curl.se/) というコマンドラインツールを使います。
 
 Windowsではコマンドプロンプト、Macではターミナルを立ち上げ下記のコマンドを実行してください。
@@ -52,7 +53,7 @@ curl -X POST https://api.a3rt.recruit.co.jp/talk/v1/smalltalk \
 「今日の天気は？」などでも返ってくるはず、変な返答なこともあります。。。
 
 
-### GoogleChromeのデベロッパーツールからの実行
+## GoogleChromeのデベロッパーツールからの実行
 
 次はブラウザ上のコンソールからリクエストを送ってみます。
 
@@ -98,7 +99,7 @@ status: 0
 ```
 
 
-### JavaScriptファイルからの実行
+## JavaScriptファイルからの実行
 
 次は自分で作成したWebページからJavaScriptの実行をしてみましょう。
 
@@ -172,9 +173,9 @@ Access to script at 'file:///C:/Users/{username}/Documents/clack/talk-api/main.j
 CORSの考え方自体は[こちら](https://developer.mozilla.org/ja/docs/Web/HTTP/CORS) を参考。
 
 
-### Nodeから実行する
+## Nodeからの実行
 
-#### Nodeのインストール
+### Nodeのインストール
 
 今回のこのエラーを回避するために使用するサーバーとしてブラウザとほぼ同じようにJavaScriptが使用できる「Node」を使用します。
 
@@ -198,7 +199,7 @@ node -v
 v16.13.1
 ```
 
-#### Nodeでの実行
+### package.jsonの作成とnodeコマンドの実行
 
 Nodeのインストールが実行出来たら、GoogleChromeのデベロッパーツールで実行したものと同等のことを行ってみましょう
 
@@ -262,7 +263,7 @@ node index.js
 }
 ```
 
-### Nodeでサーバーを実行する
+## Nodeでサーバーの実行
 
 次はNodeでサーバーを実行して、Webページを配信できる状態を作ります。
 補足: サーバーとして「[express](https://expressjs.com/ja/)」というWebフレームワークを使用します。
@@ -432,7 +433,7 @@ node index.js
 ![googlechrome_nodeserver_testhtml](https://user-images.githubusercontent.com/26959415/146932976-3b81d5df-cff7-4f6f-81df-349b10a8d1bb.png)
 
 
-### 一連の流れを作る
+## 一連の流れを作る
 
 もう一度エラーが発生したときに示した図を確認します。
 
@@ -519,6 +520,6 @@ GoogleChromeで下記の画像のようになれば成功です。
 これで目的としていた一連の流れを作ることができました。
 
 
-### 追加課題
+# 追加課題
 
 ここから、最初のデモののようにWebページでAPIトークンの入力できるようにしたり、TalkAPIにリクエストする文字列(今まではすべておはよう)をキーボードの入力されたものにするような変更をしてみましょう。
