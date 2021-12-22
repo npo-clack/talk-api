@@ -42,11 +42,10 @@ Windowsではコマンドプロンプト、Macではターミナルを立ち上�
 curl --version
 ```
 
-エラーが出なければ、下記のコマンドを実行してみましょう。
-AAA... の部分は、でもで発行したAPIKeyに置き換えてください。
+エラーが出なければ、下記のコマンドを実行してみましょう。 `AAA...` の部分は、デモで発行したAPIKeyに置き換えてください。
 ```
 curl -X POST https://api.a3rt.recruit.co.jp/talk/v1/smalltalk \
--F "apikey=" \
+-F "apikey=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" \
 -F "query=おはよう"
 ```
 
