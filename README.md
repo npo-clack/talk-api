@@ -92,7 +92,7 @@ const formdata = new FormData();
 formdata.append('apikey', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
 formdata.append('query', 'おはよう');
 
-const response = await fetch(window.location + "talk", {
+const response = await fetch("https://api.a3rt.recruit.co.jp/talk/v1/smalltalk", {
 	method: 'post',
 	body: formdata,
 });
@@ -143,7 +143,7 @@ const formdata = new FormData();
 formdata.append('apikey', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
 formdata.append('query', 'おはよう');
 
-const response = await fetch(window.location + "talk", {
+const response = await fetch("https://api.a3rt.recruit.co.jp/talk/v1/smalltalk", {
 	method: 'post',
 	body: formdata,
 });
